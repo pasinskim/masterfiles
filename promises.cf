@@ -16,8 +16,8 @@ body common control
                           cfe_internal_hub_vars,
 
                           #ha related
-                          ha,
-                          ha_update,
+                          #ha,
+                          #ha_update,
 
                           # Design Center
                           cfsketch_run,
@@ -39,8 +39,9 @@ body common control
                 # Inventory policy
                   @(inventory.inputs),
 
-                #HA
-                  "ha.cf",
+                 #HA
+                 # "ha.cf",
+
                  # Design Center
                   "sketches/meta/api-runfile.cf",
                   @(cfsketch_g.inputs),
