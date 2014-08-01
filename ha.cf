@@ -19,7 +19,7 @@ bundle agent ha_update_master_ip
 {
   files:
     "$(sys.workdir)/policy_server.dat"
-      copy_from => u_rcp("$(sys.workdir)/state/master_hub.dat", "$(ha.policy_servers_prio)"),
+      copy_from => u_rcp("$(sys.workdir)/state/master_hub.dat", @(ha.policy_servers_prio)),
       comment => "Update master hub IP on CFEngine node",
       handle => "ha_cfengine_node_update_master";
 }

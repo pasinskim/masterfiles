@@ -10,12 +10,14 @@ body common control
 
       bundlesequence => {
                         # Common bundle first (Best Practice)
-                          ha,
-                          ha_update,
                           inventory_control,
                           @(inventory.bundles),
                           def,
                           cfe_internal_hub_vars,
+
+                          #ha related
+                          ha,
+                          ha_update,
 
                           # Design Center
                           cfsketch_run,
@@ -33,11 +35,12 @@ body common control
       inputs => {
                  # File definition for global variables and classes
                   "def.cf",
-                  "ha.cf",
 
                 # Inventory policy
                   @(inventory.inputs),
 
+                #HA
+                  "ha.cf",
                  # Design Center
                   "sketches/meta/api-runfile.cf",
                   @(cfsketch_g.inputs),
