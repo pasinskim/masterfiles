@@ -66,6 +66,8 @@ bundle server access_rules()
   access:
 
     any::
+      "$(sys.workdir)/state/master_hub.dat"
+      admit => { @(def.acl) };  
 
       "$(def.dir_masterfiles)"
       handle => "server_access_grant_access_policy",
@@ -110,7 +112,7 @@ bundle server access_rules()
       comment => "Grant $(query_types) reporting query for the hub on the hosts",
       resource_type => "query",
       report_data_select => default_data_select_host,
-      admit => { "$(sys.policy_hub)" };
+      admit => { "$(sys.policy_hub)", @(ha.policy_servers_prio) };
 
     policy_server.enterprise::
 
@@ -119,7 +121,7 @@ bundle server access_rules()
       comment => "Grant $(query_types) reporting query for the hub on the policy server",
       resource_type => "query",
       report_data_select => default_data_select_policy_hub,
-      admit => { "$(sys.policy_hub)" };
+      admit => { "$(sys.policy_hub)", @(ha.policy_servers_prio) };
 
   roles:
 

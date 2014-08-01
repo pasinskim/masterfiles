@@ -8,6 +8,8 @@ body common control
 {
       bundlesequence => {
                           "update_def",
+                          "ha",
+                          "ha_update",
                           "cfe_internal_dc_workflow",
                           "cfe_internal_update_policy",
                           "cfe_internal_update_bins",
@@ -17,6 +19,7 @@ body common control
       version => "update.cf 3.6.1";
 
       inputs => {
+                  "ha.cf",
                   "update/update_bins.cf",
                   "update/cfe_internal_dc_workflow.cf",
                   "update/cfe_internal_local_git_remote.cf",
