@@ -76,8 +76,8 @@ bundle agent ha_node_sync_hub_keys
 {
   files:
   !policy_server::
-  "$(sys.workdir)/ppkeys/root-SHA=$(ha_def.config[$(def.policy_servers)][sha]).pub"
-      copy_from => no_backup_scp("$(sys.workdir)/ppkeys_staging/root-SHA=$(ha_def.config[$(def.policy_servers)][sha]).pub", "$(def.policy_servers)"),
+  "$(sys.workdir)/ppkeys/root-SHA=$(ha_def.config[$(ha_main.connected_servers)][sha]).pub"
+      copy_from => no_backup_scp("$(sys.workdir)/ppkeys_staging/root-SHA=$(ha_def.config[$(ha_main.connected_servers)][sha]).pub", "$(def.policy_servers)"),
     file_select => client_keys_select,
         comment => "Distribute all hub keys to clients",
          handle => "ha_copy_hub_keys_to_nodes",
