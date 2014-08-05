@@ -46,7 +46,7 @@ bundle agent ha_hub_sync_keys
 {
  files:
    "$(ha_def.ppkeys_staging)"
-      copy_from => no_backup_scp("$(ha_def.ppkeys)", "$(ha_main.connected_servers)"),
+      copy_from => no_backup_scp("$(sys.workdir)/ppkeys", "$(ha_main.connected_servers)"),
     file_select => client_keys_select,
         comment => "Distribute all client keys between replica set servers",
          handle => "ha_copy_client_keys_between_replica_set_servers",
@@ -60,8 +60,7 @@ bundle agent ha_hub_sync_keys
 bundle agent ha_update_staged_ppkeys
 {
  files:
-   "$(ha_main.ppkeys)"
-#    "/tmp/ppkeys_real"
+   "$(sys.workdir)/ppkeys"
       copy_from => no_backup_cp("$(ha_main.ppkeys_staging)"),
     file_select => client_keys_select,
         comment => "Copy staged client keys to ppkeys",
