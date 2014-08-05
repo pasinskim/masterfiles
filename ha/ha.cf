@@ -20,7 +20,7 @@ bundle agent ha_main
   policy_server.keys_staged::
    "establish trust" usebundle => ha_update_staged_ppkeys;
 
-  !policy-server.ha_enabled::
+  !policy_server.ha_enabled::
     "Copy hub keys to clients" usebundle => ha_node_sync_hub_keys;
 
  reports:
