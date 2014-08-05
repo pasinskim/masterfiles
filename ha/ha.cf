@@ -46,7 +46,7 @@ bundle agent ha_hub_sync_keys
 {
  files:
    "$(ha_def.ppkeys_staging)"
-      copy_from => no_backup_scp("$(ha_def.ppkeys)", "$(ha_def.connected_servers)"),
+      copy_from => no_backup_scp("$(ha_def.ppkeys)", "$(ha_main.connected_servers)"),
     file_select => client_keys_select,
         comment => "Distribute all client keys between replica set servers",
          handle => "ha_copy_client_keys_between_replica_set_servers",
