@@ -1,20 +1,14 @@
 {
- "172.17.0.5":
+ "172.17.0.107":
  {
-  "sha": "a1072f944ec7f1c4c78f0dda6f858845991adc08dbe500e80f082e152eb886ee",
-  "internal_ip": "172.17.0.4",
+  "sha": "8f1651bceb40531d3f9069d287927dcda7014057743d2407a77f11b5a081011b",
+  "internal_ip": "172.17.0.107",
   "tags": ["server1"]
  },
- "172.17.0.2":
+ "172.17.0.93":
  {
   "sha": "c6bd68a37c6850b816ebcc5676f4e8389c5966eada0e25e58b68dba2ec126e52",
-  "internal_ip": "172.17.0.2",
+  "internal_ip": "172.17.0.93",
   "tags": ["server2"]
- }
- "172.17.0.6":
- {
-  "sha": "de56d3147b9ce610cea56fb2157dc1abde4c24996c73cfc89ddcf64d140d6556",
-  "internal_ip": "172.17.0.6",
-  "tags": ["server3"]
  }
 }
