@@ -103,6 +103,11 @@ bundle server access_rules()
       comment => "Grant access to ppkeys for HA hubs",
       admit => { @(def.policy_servers) };
 
+      "$(sys.workdir)/ppkeys_staging"
+      handle => "server_access_grant_access_ppkeys_staging_hubs",
+      comment => "Grant access to ppkeys staging for HA hubs",
+      admit => { @(def.policy_servers) };
+
       "$(sys.workdir)/policy_server.dat"
       handle => "server_access_grant_access_policy_server_dat",
       comment => "Grant access tp policy_server.dat",
