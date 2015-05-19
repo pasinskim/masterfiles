@@ -95,12 +95,12 @@ bundle edit_line repository
     redhat|suse::
       "[test-repository]";
       "name=Test repository";
-      "baseurl=file:///test-repos/rpm_repo";
+      "baseurl=file://$(p.resources)/rpm_repo";
       "enabled=1";
       "gpgcheck=0";
     debian::
-      "deb file:///test-repos/deb_repo1 package1 main";
-      "deb file:///test-repos/deb_repo2 package2 main";
+      "deb file://$(p.resources)/deb_repo1 package1 main";
+      "deb file://$(p.resources)/deb_repo2 package2 main";
 }
 
 body edit_defaults edit_defaults
