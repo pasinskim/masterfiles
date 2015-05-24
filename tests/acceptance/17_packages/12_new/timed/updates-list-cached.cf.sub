@@ -22,7 +22,7 @@ bundle agent test
 {
   packages:
       # Promise outcome is irrelevant, we're only interested in the cached package list.
-      "cfe-present-package"
+      "cfe-absent-package"
         policy => "present",
         version => "latest";
 }
