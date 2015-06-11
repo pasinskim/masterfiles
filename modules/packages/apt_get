@@ -8,6 +8,7 @@ import re
 dpkg_cmd = os.environ.get('CFENGINE_TEST_DPKG_CMD', "/usr/bin/dpkg")
 dpkg_deb_cmd = os.environ.get('CFENGINE_TEST_DPKG_DEB_CMD', "/usr/bin/dpkg-deb")
 dpkg_query_cmd = os.environ.get('CFENGINE_TEST_DPKG_QUERY_CMD', "/usr/bin/dpkg-query")
+dpkg_arch_cmd = os.environ.get('CFENGINE_TEST_DPKG_ARCH_CMD', "/usr/bin/dpkg-architecture")
 
 dpkg_output_format = "Name=${Package}\nVersion=${Version}\nArchitecture=${Architecture}\n"
 dpkg_status_format = "Status=${Status}\n" + dpkg_output_format
@@ -93,23 +94,40 @@ def list_updates(online):
         #                         /-------+-------\              /--+--\       /------+-------\
         match = re.match("^Inst\s+(?P<name>[^\s:]+)(?::\S+)?\s+\[[^]\s]+\]\s+\((?P<version>\S+)" +
 
-        #                         repository(ies)              arch
-        #                               |                        |
-        #                    /----------+----------\     /-------+-------\
-                         "\s+[^,\s]+(?:,\s+[^,\s]+)*\s+\[(?P<arch>[^]\s]+)\]\).*", line)
+        #                         repository(ies)                arch (might be optional)
+        #                               |                          |
+        #                    /----------+----------\     /---------+---------\
+                         "\s+[^,\s]+(?:,\s+[^,\s]+)*(\s+\[(?P<arch>[^]\s]+)\])?\).*", line)
 
         if match is not None:
             sys.stdout.write("Name=" + match.group("name") + "\n")
             sys.stdout.write("Version=" + match.group("version") + "\n")
-            sys.stdout.write("Architecture=" + match.group("arch") + "\n")
+
+            arch = match.group("arch")
+            if not arch:
+                arch = get_platform_arch()
+            sys.stdout.write("Architecture=" + arch + "\n")
 
     return 0
+
+
+def get_platform_arch():
+    process = subprocess.Popen([dpkg_arch_cmd], stdout=subprocess.PIPE)
+    for line in process.stdout:
+        # The space before "installed" is important, because it can be "not-installed".
+        if "DEB_BUILD_ARCH=" in line:
+            name, arch = line.split("=", 1)
+            arch = arch.rstrip()
+            return arch
+    return None
 
 
 def one_package_argument(name, arch, version, is_apt_install):
     args = []
     archs = []
-    if arch:
+    platform_arch = get_platform_arch()
+
+    if arch and arch != platform_arch:
         archs.append(arch)
     elif is_apt_install:
         # Here we have no specified architecture and we are installing.
@@ -121,7 +139,7 @@ def one_package_argument(name, arch, version, is_apt_install):
             # The space before "installed" is important, because it can be "not-installed".
             if "=" in line:
                 arch, stat = line.split("=", 1)
-                if stat.find(" installed") >= 0:
+                if stat.find(" installed") >=  0 and arch != platform_arch:
                     archs.append(arch)
 
     version_suffix = ""
@@ -133,6 +151,11 @@ def one_package_argument(name, arch, version, is_apt_install):
     elif is_apt_install:
         args.append(name + version_suffix)
     else:
+        # On some older deb platforms like Ubuntu10 above call
+        # will fail as there is no support for multiple architectures.
+        # We have to call remove without any suffix after package name
+        # in order to be able to remove package.
+        args.append(name + version_suffix)
         # Delete all architectures if none is specified.
         args.append(name + ":*" + version_suffix)
 
